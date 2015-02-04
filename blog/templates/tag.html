@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}{{ posts.slug }}{% endblock %}
+
+{% block sub %}
+    <p>Posts with the "{{ posts.slug }}" tag</p>
+{% endblock %}
+
+{% block blog_tags %}
+    {% for object in object_list %}
+        <h3>posted: {{ object.posted }}</h3>
+        {% for tag in object.tags.all %}
+            <a href="/tag/{{ tag }}">{{ tag }}</a>
+        {% endfor %}
+        <h2><a href="{{ object.get_absolute_url }}">{{ object.title }}</a></h2>
+        <h4>{{ object.text }}</h4>
+    {% endfor %}
+    <hr/>
+{% endblock %}

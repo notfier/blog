@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}{{ object.title }}{% endblock %}
+{% block blog_posts %}
+
+    <h3>{{ object.title }}</h3>
+    <h5>{{ object.posted }}</h5>
+    <p>{{ object.text }}</p>
+    <hr/>
+
+    <h3>Comments:</h3>
+    {% for comment in comments %}
+        <p>{{ comment.added }} - posted by {{ comment.author }}</p>
+        <p>{{ comment.comment_text }}</p>
+    {% endfor %}
+    <form action="/post/add_comment/{{ object.slug }}/" method="POST">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="fieldWrapper">
+            {{ form.subject.errors }}
+            <label for="id_author">Add your name:</label><br>
+            {{ form.author }}
+            <label for="id_comment_text">Add your comment here:</label><br>
+            {{ form.comment_text }}
+        </div>
+        <br>
+        <input type="submit" value="Add comment" class="btn btn-primary">
+    </form>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% load staticfiles %}
+{% load myfilters %}
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static "css/bootstrap.css" %}"/>
+</head>
+<body>
+    <div>
+    <h3><a href="/">Test Blog.</a></h3>
+    {% block sub %}{% endblock %}
+    {% block blog_posts %}{% endblock %}
+    {% block blog_tags %}{% endblock %}
+        <div>
+            {% sidebar_sorted_tags %}
+        </div>
+    </div>
+</body>
+</html>

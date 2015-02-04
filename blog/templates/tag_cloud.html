@@ -1,0 +1,12 @@
+
+
+    <div>
+        <p>Tags</p>
+        {% for tag in tag_cloud %}
+            <ul>
+                <li><a href="/tag/{{ tag.slug }}">{{ tag.name }}</a></li>
+            </ul>
+        {% empty %}
+            <a href="">There is no tags yet</a>
+        {% endfor %}
+    </div>
