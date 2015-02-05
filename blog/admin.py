@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django_markdown.admin import MarkdownModelAdmin
+
 
 from . import models
 
@@ -6,8 +8,8 @@ from . import models
 
 
 @admin.register(models.Post)
-class PostAdmin(admin.ModelAdmin):
-    list_display = ['title', 'text']
+class PostAdmin(MarkdownModelAdmin):
+    list_display = ['title', 'posted']
     prepopulated_fields = {"slug": ("title",)}
 
 

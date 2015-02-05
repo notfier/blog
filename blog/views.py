@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, redirect
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView
 from django.views.decorators.csrf import csrf_protect
 from django.db.models import Count
 
@@ -34,6 +34,7 @@ class TagView(ListView):
     model = Tag
     template_name = 'tag.html'
     context_object_name = 'tag_list'
+    paginate_by = 5
 
     def get_queryset(self):
         slug_received = self.kwargs['slug']
@@ -54,7 +55,8 @@ class AllTagCloudView(ListView):
     context_object_name = 'tag_cloud'
 
     def get_queryset(self):
-        qs = Tag.objects.values("name", "slug").annotate(Count("post")).order_by('-post__count')
+        qs = Tag.objects.values("name", "slug")\
+            .annotate(Count("post")).order_by('-post__count')
         return qs
 
 
@@ -71,16 +73,6 @@ def add_comment(request, slug):
             form.save()
     return redirect('/post/{0}/'.format(slug))
 
-
-# class CreateCommentView(CreateView):
-#     form_class = CommentForm
-#     template_name = 'comments.html'
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(CreateCommentView, self).get_context_data(**kwargs)
-#         current_post = get_object_or_404(Post, slug=self.kwargs['slug'])
-#         context['form'] = CommentForm(self, self.request.POST, instance=current_post)
-#         return context
 
 
 

@@ -1,27 +1,56 @@
 {% extends "base.html" %}
 
 {% block title %}{{ object.title }}{% endblock %}
-{% block blog_posts %}
 
-    <h3>{{ object.title }}</h3>
-    <h5>{{ object.posted }}</h5>
-    <p>{{ object.text }}</p>
-    <hr/>
+{% block blog_posts %}
+{% load myfilters %}
+{% load django_markdown %}
+        <div>
+            <h2><a class="text-link" href="{{ post.get_absolute_url }}">{{ object.title }}</a></h2>
+            <div class="well well-sm">
+                <div class="post-info">
+                    <span class="label label-default">Posted</span>
+                    <span class="published">
+                        <time>{{ object.posted }}</time>
+                    </span>
+                    <span class="label label-default">Tags</span>
+                    {% for tag in object.tags.all %}
+                        <a href="tag/{{ tag }}">{{ tag }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="summary">
+                <div>
+                    <img src="{{ object.picture.url }}" class="img-responsive" alt="{{ object.title }}"/>
+                </div>
+                <br/>
+                <p>{{ object.text|markdown }}</p>
+            </div>
+            <hr/>
+        </div>
 
     <h3>Comments:</h3>
     {% for comment in comments %}
-        <p>{{ comment.added }} - posted by {{ comment.author }}</p>
-        <p>{{ comment.comment_text }}</p>
+        <div class="comment-box">
+            <p class="comment-header"><span class="comment-date">{{ comment.added }}</span>
+                | <span class="comment-author">{{ comment.author }}</span></p>
+            <p class="comment">{{ comment.comment_text }}</p>
+        </div>
+    {% empty %}
+        <p>There is no comments yet. Be first :)</p>
     {% endfor %}
+    <br/>
+    <p class="text-center">Add your comment</p>
     <form action="/post/add_comment/{{ object.slug }}/" method="POST">
         {% csrf_token %}
         {{ form.non_field_errors }}
         <div class="fieldWrapper">
             {{ form.subject.errors }}
-            <label for="id_author">Add your name:</label><br>
-            {{ form.author }}
-            <label for="id_comment_text">Add your comment here:</label><br>
-            {{ form.comment_text }}
+            <label for="id_author">Your name:</label><br>
+            {{ form.author|addclass:"form-control" }}
+            <br/>
+            <label for="id_comment_text">Text:</label><br>
+            {{ form.comment_text|addclass:'form-control comment-textarea' }}
         </div>
         <br>
         <input type="submit" value="Add comment" class="btn btn-primary">

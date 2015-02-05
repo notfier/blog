@@ -2,6 +2,8 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 
+from django_markdown.models import MarkdownField
+
 # Create your models here.
 
 
@@ -28,8 +30,9 @@ class Post(models.Model):
     """
 
     title = models.CharField(max_length=50)
+    picture = models.ImageField(upload_to="pictures/%Y/%m/%d")
     posted = models.DateTimeField(auto_now_add=True)
-    text = models.TextField(max_length=10000)
+    text = MarkdownField(max_length=10000)
     tags = models.ManyToManyField(Tag)
     slug = models.SlugField(max_length=200, unique=True)
 

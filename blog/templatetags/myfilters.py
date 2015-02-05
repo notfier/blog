@@ -1,9 +1,9 @@
 __author__ = 'boshepelinski'
 from django import template
-
-from blog.views import AllTagCloudView
-from blog.models import Tag
 from django.db.models import Count
+
+from blog.models import Tag
+
 
 register = template.Library()
 
@@ -15,3 +15,11 @@ def sidebar_sorted_tags(context):
     """
     return {'tag_cloud': Tag.objects.values("name", "slug")
             .annotate(Count("post")).order_by('-post__count')}
+
+
+@register.filter(name="addclass")
+def add_class(val, arg):
+    """
+    Add classes to form elements.
+    """
+    return val.as_widget(attrs={"class": arg})

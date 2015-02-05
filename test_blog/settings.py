@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,6 +40,7 @@ INSTALLED_APPS = (
 
     'blog',
     'blog.templatetags.myfilters',
+    'django_markdown',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -50,6 +52,15 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    "django.core.context_processors.request",
+)
+
+GRAPPELLI_ADMIN_TITLE = 'Blog | All about something'
+
+MARKDOWN_EDITOR_SKIN = 'simple'
 
 ROOT_URLCONF = 'test_blog.urls'
 

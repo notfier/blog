@@ -1,14 +1,34 @@
 {% extends "base.html" %}
 
+{% block title %}Blog | All about smth{% endblock %}
 {% block blog_posts %}
 
     {% for post in posts_list %}
-        <h3>posted: {{ post.posted }}</h3>
-        {% for tag in post.tags.all %}
-            <a href="tag/{{ tag }}">{{ tag }}</a>
-        {% endfor %}
-        <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
-        <h4>{{ post.text }}</h4>
+        <div>
+            <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
+            <div class="well well-sm">
+                <div class="post-info">
+                    <span class="label label-default">Posted</span>
+                    <span class="published">
+                        <time>{{ post.posted }}</time>
+                    </span>
+                    <span class="label label-default">Tags</span>
+                    {% for tag in post.tags.all %}
+                        <a href="tag/{{ tag }}">{{ tag }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="summary">
+                <div>
+                    <a href="{{ post.get_absolute_url }}">
+                        <img src="{{ post.picture.url }}" class="img-responsive" alt="{{ post.title }}"/>
+                    </a>
+                </div>
+                <br/>
+                <div class="text-center"><a href="{{ post.get_absolute_url }}">read more...</a></div>
+            </div>
+            <hr/>
+        </div>
     {% endfor %}
     <hr/>
 

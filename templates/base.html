@@ -4,17 +4,64 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{% static "css/bootstrap.css" %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static "css/bootstrap.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/styles.css" %}">
 </head>
 <body>
-    <div>
-    <h3><a href="/">Test Blog.</a></h3>
-    {% block sub %}{% endblock %}
-    {% block blog_posts %}{% endblock %}
-    {% block blog_tags %}{% endblock %}
-        <div>
-            {% sidebar_sorted_tags %}
+    <div class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">Blog | All about something</a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <hr/>
+        <div class="row">
+            <div class="col-sm-9">
+                {% block blog_posts %}{% endblock %}
+                {% block blog_tags %}{% endblock %}
+                <div class="pagination pag-center">
+
+                        <ul class="pagination">
+                          {% if page_obj.has_previous %}
+                            <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                          {% else %}
+                            <li class="disabled"><a href="#">&laquo;</a></li>
+                          {% endif %}
+
+                          {% for num in page_obj.paginator.page_range %}
+                            {% ifequal num page_obj.number %}
+                              <li class="active"><a href="#">{{ num }}<span class="sr-only">(current)</span></a></li>
+                            {% else %}
+                              <li><a href="?page={{ num }}">{{ num }}</a></li>
+                            {% endifequal %}
+                          {% endfor %}
+
+                          {% if page_obj.has_next %}
+                            <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                          {% else %}
+                            <li class="disabled"><a href="#">&raquo;</a></li>
+                          {% endif %}
+                        </ul>
+
+                </div>
+            </div>
+            <div class="col-sm-3">
+                {% sidebar_sorted_tags %}
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="container">
+            <hr/>
+            <div class="row">
+                <div class="col-xs-10">
+                    <p class="text-left">Blog | All about something. 2015. All rights reserved.</p>
+                </div>
+            </div>
         </div>
     </div>
 </body>
